@@ -1,0 +1,186 @@
+MongoDB Tutorial
+
+Basic Concepts
+[ ] Collection: A group of documents.
+[ ] Database: A group of collections.
+[ ] MongoDB Compass: A graphical user interface (GUI) for MongoDB.
+
+Establishing Connection
+[ ] mongosh: Command-line interface to establish a connection to MongoDB.
+
+Database Operations
+[ ] show dbs: Displays available databases.
+[ ] use <db_name>: Switches to the specified database or creates a new one and switches to it.
+
+Document Operations
+[ ] db.collection.insertOne({}): Inserts a single document into the collection.
+[ ] db.collection.insertMany([{}, {}, {}]): Inserts multiple documents into the collection.
+[ ] db.collection.find(): Retrieves documents from the collection.
+
+Data Types in MongoDB
+[ ] String
+[ ] Integers
+[ ] Double
+[ ] Boolean
+[ ] Date (Objects passed in the constructor)
+[ ] Null
+[ ] Arrays
+[ ] Nested Document
+
+Example Document Insertion
+db.students.insertOne({
+  name: "Larry",
+  age: 23,
+  gpa: 2.3,
+  fullTime: false,
+  registerDate: new Date(),
+  graduationDate: null,
+  courses: ["Biology", "Chemistry", "Physics"],
+  address: {
+    street: "123 Fake St.",
+    city: "Alberta Bottom",
+    zip: 234675
+  }
+})
+
+Querying Data
+[ ] db.collection.find().sort({field: 1}): Sorts documents in ascending order based on the specified field.
+[ ] db.collection.find().limit(n): Limits the number of returned documents to n.
+[ ] db.collection.find({query},{projection}): Finds specific data entry and specifies which fields to include or exclude in the returned documents.
+
+Update Operations
+[ ] db.collection.updateOne(filter, update): Updates a single document that matches the filter criteria.
+[ ] db.collection.updateMany(filter, update): Updates multiple documents that match the filter criteria.
+
+Comparison Operators
+[ ] $lt: Less than
+[ ] $lte: Less than or equal to
+[ ] $gt: Greater than
+[ ] $gte: Greater than or equal to
+[ ] $ne: Not equal to
+[ ] $in: In comparison operator
+[ ] $nin: Not-in comparison operator
+
+Logical Operators
+[ ] $and: Logical AND operator
+[ ] $or: Logical OR operator
+[ ] $nor: Logical NOR operator
+[ ] $not: Logical NOT operator
+
+Collection Operations
+[ ] db.collection.explain("executionStats"): Provides execution statistics for a query.
+[ ] db.collection.createIndex({field: 1}): Creates an index on the specified field.
+[ ] db.collection.getIndexes(): Retrieves the indexes of the collection.
+[ ] db.collection.dropIndex("index_name"): Drops the specified index from the collection.
+[ ] show collections: Displays available collections.
+[ ] db.createCollection("collection_name", options): Creates a new collection with optional parameters.
+[ ] db.collection.drop(): Drops the specified collection.
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+MongoDB Tutorial
+collection is a group of documents
+database is a group of collections
+mongoDB Compass is GUI for it
+
+mongosh --> To establish a connection to mongodb in mongosh
+
+show dbs --> displays databases
+
+use "db_name" --> switches to a present db or creates a new one and switches to it
+
+db.students.insertOne({})
+
+db.students.find()
+
+db.students.insertMany([{}, {}, {}])
+
+DataTypes in MongoDB
+String
+Integers
+Double
+Boolean
+Date Objects passed in constructor
+Null
+Arrays
+Nested Document
+
+school> db.students.insertOne({name: "Larry", age: 23, gpa: 2.3, fullTime: false, registerDate: new Date(), graduationDate: null, courses: ["Biology", "Chemistry", "Physics"], address: {street: "123 Fake St.", city: "Bikini Top", zip: 234675}})
+
+db.students.find().sort({name: 1}) --> sorts acccording to name
+
+school> db.students.find().limit(1) --> returns limited documents
+
+school> db.students.find().sort({gpa: -1}).limit(1) --> combined
+
+school> db.students.find(name: "name") --> finds specific data entry --> .find({query},{projection})
+
+school> db.students.find({}, {name: true}) --> returns name and id
+
+school> db.students.find({}, {_id: false, name: true})
+
+1 is ascending
+-1 is descending
+
+
+UPDATE METHOD
+
+school> db.students.updateOne(filter, update)
+
+school> db.students.updateOne({name: "Patrick"}, {$set: {fullTime: true}}) 
+
+two names can be same so we update by object ID
+
+school> db.students.updateOne({_id: ObjectId('65fe95b7149936becb491a47')}, {$unset: {fullTime: ""}})
+
+school> db.students.find({_id: ObjectId('65fe95b7149936becb491a47')})
+
+school> db.students.updateMany({_id: ObjectId('65fe95b7149936becb491a47')}, {$unset: {fullTime: ""}})
+
+// COMPARISION OPERATORS
+
+school> db.students.find({age: {$lt: 20}}) // less than
+
+school> db.students.find({age: {$ne: 20}}) // not equal
+
+school> db.students.find({age: {$lte: 20}}) // less than equal to
+
+school> db.students.find({age: {$gt: 20}}) // greater than 
+
+school> db.students.find({age: {$gte: 20}}) // greater than equal to
+
+school> db.students.find({age: {$gte: 20, $lte: 30}}) // greater than equal to and less than equal
+
+school> db.students.find({name: {$in: ["X", "Y", "Z"]}}) // in comparision operator
+
+school> db.students.find({name: {$nin: ["X", "Y", "Z"]}}) // not-in comparision operator
+
+// LOGICAL OPERATORS
+
+school> db.students.find({$and: [{fullTime: true}, {age: {$lte:22}}]})
+
+school> db.students.find({$or: [{fullTime: true}, {age: {$lte:22}}]})
+
+school> db.students.find({$nor: [{fullTime: true}, {age: {$lte:22}}]})
+
+school> db.students.find({$not: [{fullTime: true}, {age: {$lte:22}}]})
+
+// COLLECTIONS
+
+db.students.find({name: "Hanna"}).explain("executionStats")
+db.students.createIndex({name: 1})
+db.students.getIndexes()
+db.students.dropIndex("name_1")
+show collections
+db.createCollection("teachers", {capped: true, size:1000000, max: 100}, {autoIndexId: false})
+db.createCollection("courses")
+db.courses.drop()
+
+
+
+
+
+
+
+
